@@ -1,7 +1,5 @@
-import Image from "next/image";
+import { ValentineExperience } from "@/components/ValentineExperience";
 
-export default function Home() {
-  return (
-    <>A</>
-  );
+export default function HomePage() {
+  return <ValentineExperience />;
 }
