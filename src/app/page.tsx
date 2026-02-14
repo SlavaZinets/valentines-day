@@ -1,7 +1,7 @@
-import Image from "next/image";
+import {Valentines} from "@/components/Valentines";
 
 export default function Home() {
   return (
-    <>A</>
+    <Valentines />
   );
 }
