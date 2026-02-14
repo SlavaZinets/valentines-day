@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { type PointerEvent, useCallback, useMemo, useRef, useState } from "react";
+import { type PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Stage = "intro" | "lock" | "question" | "final";
 
@@ -16,6 +16,7 @@ export function ValentineExperience() {
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
+  const pinInputRef = useRef<HTMLInputElement>(null);
 
   const requestFullscreen = async () => {
     const root = document.documentElement;
@@ -34,6 +35,8 @@ export function ValentineExperience() {
   };
 
   const handleUnlock = () => {
+    pinInputRef.current?.blur();
+
     if (pin === CORRECT_CODE) {
       setError(false);
       setLockOpened(true);
@@ -96,6 +99,12 @@ export function ValentineExperience() {
         : "0 0 0px rgba(0, 0, 0, 0)",
     [yesScale],
   );
+
+  useEffect(() => {
+    if (stage === "question") {
+      randomPosition();
+    }
+  }, [randomPosition, stage]);
 
   return (
     <main
@@ -161,10 +170,12 @@ export function ValentineExperience() {
             </motion.div>
             <p className="mb-3 text-lg font-semibold text-rose-800">Введи наш код кохання</p>
             <input
+              ref={pinInputRef}
               value={pin}
               onChange={(event) => {
                 setPin(event.target.value);
                 setError(false);
+                pinInputRef.current?.focus();
               }}
               type="password"
               inputMode="numeric"
@@ -212,7 +223,7 @@ export function ValentineExperience() {
               type="button"
               animate={{ x: noButtonPosition.x, y: noButtonPosition.y }}
               transition={{ type: "spring", stiffness: 220, damping: 14 }}
-              onMouseEnter={randomPosition}
+              onPointerEnter={randomPosition}
               onPointerDown={(event: PointerEvent<HTMLButtonElement>) => {
                 event.preventDefault();
                 randomPosition();
