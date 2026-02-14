@@ -165,7 +165,7 @@ export function ValentineExperience() {
         if (stage === "lock" && !audioRef.current) {
             const audio = new Audio("/musicFolder/bg_music.mp3");
             audio.loop = true;
-            audio.volume = 1;
+            audio.volume = 0.5;
             audio.play().catch((err) => console.error("Audio play failed:", err));
             audioRef.current = audio;
         }
